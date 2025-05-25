@@ -1,2 +1,2 @@
 # aura-athletics-lab-web
-Minimalist webpage for Aura Athletics Lab 
+Webpage for Aura Athletics Lab 
