@@ -28,32 +28,56 @@
     }
     button:hover { background-color: #fff; color: #000; }
     .construction { font-family: 'Ubuntu Mono', monospace; font-size: 16px; opacity: 0.6; margin-top: 60px; }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .social-icons a {
+      display: inline-block;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .social-icons a:hover {
+      opacity: 1;
+    }
+    .social-icons svg {
+      width: 24px;
+      height: 24px;
+      fill: #ffffff;
+    }
   </style>
 </head>
 <body>
   <img src="aura_logo_w.svg" alt="AURA Logo" class="logo">
   <h1>AURA</h1>
-  <p class="mission">On a mission.</p>
+  <p class="mission">On a mission. 247.</p>
 
   <div class="product">
     <img src="images/tee/tee1.png" onclick="openGallery('tee',5)" alt="AURA Tee">
-    <div class="product-name">AURA Tee</div>
+    <div class="product-name">AURA Uniform Tee</div>
     <div class="price">35€</div>
-    <button onclick="preOrder('AURA Tee')">Pre-order</button>
+	<ul>
+      <li>100% algodón ecológico peinado hilado en anillos</li>
+      <li>Peso del tejido: 350 g/m²</li>
+      <li>Corte normal</li>
+      <li>Certificados: GRS, OCS, GOTS, OEKO-TEX 100 y PETA-Approved Vegan</li>
+    </ul>
+    <button onclick="preOrder('AURA Uniform Tee')">Pre-order</button>
   </div>
 
   <div class="product">
     <img src="images/crewneck/crewneck1.png" onclick="openGallery('crewneck',5)" alt="AURA Crewneck">
-    <div class="product-name">AURA Crewneck</div>
+    <div class="product-name">AURA Uniform Crewneck</div>
     <div class="price">70€</div>
-    <button onclick="preOrder('AURA Crewneck')">Pre-order</button>
+    <button onclick="preOrder('AURA Uniform Crewneck')">Pre-order</button>
   </div>
 
   <div class="product">
     <img src="images/flag/flag1.png" onclick="openGallery('flag',3)" alt="AURA Flag">
-    <div class="product-name">AURA Flag</div>
+    <div class="product-name">AURA Uniform Flag</div>
     <div class="price">40€</div>
-    <button onclick="preOrder('AURA Flag')">Pre-order</button>
+    <button onclick="preOrder('AURA Uniform Flag')">Pre-order</button>
   </div>
 
   <p class="construction">Under Construction</p>
