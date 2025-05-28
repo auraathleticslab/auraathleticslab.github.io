@@ -5,64 +5,29 @@
   <title>AURA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css">
   <style>
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
       background-color: #000;
       color: #fff;
       padding: 40px 20px;
-      margin: 0;
       text-align: center;
+      margin: 0;
     }
-    .logo {
-      width: 100px;
-      margin-bottom: 10px;
-    }
-    h1 {
-      font-size: 42px;
-      margin-bottom: 5px;
-    }
-    .mission {
-      opacity: 0.7;
-      margin-bottom: 40px;
-    }
-    .product {
-      margin-bottom: 40px;
-    }
-    .product img {
-      width: 300px;
-      max-width: 90%;
-      border-radius: 4px;
-      margin-bottom: 15px;
-    }
-    .product-name {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-    .price {
-      font-size: 18px;
-      opacity: 0.8;
-      margin-bottom: 15px;
-    }
+    .logo { width: 100px; margin-bottom: 10px; }
+    h1 { font-size: 42px; margin-bottom: 5px; }
+    .mission { opacity: 0.7; margin-bottom: 40px; }
+    .product { margin-bottom: 40px; }
+    .product img { width: 300px; max-width: 90%; border-radius: 4px; margin-bottom: 15px; cursor:pointer; }
+    .product-name { font-size: 24px; margin-bottom: 8px; }
+    .price { font-size: 18px; opacity: 0.8; margin-bottom: 15px; }
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: transparent;
-      color: #fff;
-      border: 1px solid #fff;
-      border-radius: 3px;
-      cursor: pointer;
+      padding: 10px 20px; font-size: 16px; background-color: transparent; color: #fff;
+      border: 1px solid #fff; border-radius: 3px; cursor: pointer;
     }
-    button:hover {
-      background-color: #fff;
-      color: #000;
-    }
-    .construction {
-      font-family: 'Ubuntu Mono', monospace;
-      font-size: 16px;
-      opacity: 0.6;
-      margin-top: 60px;
-    }
+    button:hover { background-color: #fff; color: #000; }
+    .construction { font-family: 'Ubuntu Mono', monospace; font-size: 16px; opacity: 0.6; margin-top: 60px; }
   </style>
 </head>
 <body>
@@ -71,21 +36,21 @@
   <p class="mission">On a mission.</p>
 
   <div class="product">
-    <img src="tee.png" alt="AURA Tee">
+    <img src="images/tee/tee1.png" onclick="openGallery('tee',5)" alt="AURA Tee">
     <div class="product-name">AURA Tee</div>
     <div class="price">35€</div>
     <button onclick="preOrder('AURA Tee')">Pre-order</button>
   </div>
 
   <div class="product">
-    <img src="crewneck.png" alt="AURA Crewneck">
+    <img src="images/crewneck/crewneck1.png" onclick="openGallery('crewneck',5)" alt="AURA Crewneck">
     <div class="product-name">AURA Crewneck</div>
     <div class="price">70€</div>
     <button onclick="preOrder('AURA Crewneck')">Pre-order</button>
   </div>
 
   <div class="product">
-    <img src="flag.png" alt="AURA Flag">
+    <img src="images/flag/flag1.png" onclick="openGallery('flag',3)" alt="AURA Flag">
     <div class="product-name">AURA Flag</div>
     <div class="price">40€</div>
     <button onclick="preOrder('AURA Flag')">Pre-order</button>
@@ -93,27 +58,36 @@
 
   <p class="construction">Under Construction</p>
 
+<script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
 <script>
 function preOrder(product) {
-  const name = prompt("Enter your name:");
-  if (!name) return;
-
-  const email = prompt("Enter your email:");
-  if (!email) return;
-
-  let size = 'N/A';
-  if (product !== 'AURA Flag') {
-    size = prompt("Enter your size (S, M, L, XL):");
-    if (!size) return;
-  }
-
+  const name = prompt("Enter your name:"); if (!name) return;
+  const email = prompt("Enter your email:"); if (!email) return;
+  let size = (product !== 'AURA Flag') ? prompt("Enter your size (S,M,L,XL):") : 'N/A';
   const comments = prompt("Additional comments (optional):") || 'None';
-
   const subject = encodeURIComponent(`Pre-order: ${product}`);
   const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSize: ${size}\nComments: ${comments}`);
   window.location.href = `mailto:gorka.zb.gr@gmail.com?subject=${subject}&body=${body}`;
 }
-</script>
 
+function openGallery(product, numImages) {
+  let index = 1;
+  const showImage = (idx) => {
+    return basicLightbox.create(`
+      <img src="images/${product}/${product}${idx}.png" style="width:90vw;max-width:800px;border-radius:5px;">
+      <div style="margin-top:10px;">
+        <button onclick="prevImage()">◀</button>
+        <button onclick="nextImage()">▶</button>
+      </div>
+    `,{
+      onShow: (instance) => {
+        window.nextImage = () => { index = idx < numImages ? idx+1 : 1; instance.close(); showImage(index).show(); };
+        window.prevImage = () => { index = idx > 1 ? idx-1 : numImages; instance.close(); showImage(index).show(); };
+      }
+    });
+  };
+  showImage(index).show();
+}
+</script>
 </body>
 </html>
