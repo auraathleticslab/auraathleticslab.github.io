@@ -59,15 +59,48 @@
   <p class="construction">Under Construction</p>
 
 <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
+<form id="preorderForm" style="display:none;">
+  <input type="hidden" name="orderNumber" id="orderNumber">
+  <input type="hidden" name="product" id="product">
+  <input type="text" name="name" id="name">
+  <input type="email" name="email" id="email">
+  <input type="text" name="size" id="size">
+  <textarea name="comments" id="comments"></textarea>
+</form>
+
 <script>
+function generateOrderNumber() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
 function preOrder(product) {
   const name = prompt("Enter your name:"); if (!name) return;
   const email = prompt("Enter your email:"); if (!email) return;
   let size = (product !== 'AURA Flag') ? prompt("Enter your size (S,M,L,XL):") : 'N/A';
   const comments = prompt("Additional comments (optional):") || 'None';
-  const subject = encodeURIComponent(`Pre-order: ${product}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSize: ${size}\nComments: ${comments}`);
-  window.location.href = `mailto:gorka.zb.gr@gmail.com?subject=${subject}&body=${body}`;
+
+  const orderNumber = generateOrderNumber();
+
+  document.getElementById('orderNumber').value = orderNumber;
+  document.getElementById('product').value = product;
+  document.getElementById('name').value = name;
+  document.getElementById('email').value = email;
+  document.getElementById('size').value = size;
+  document.getElementById('comments').value = comments;
+
+  fetch('https://formspree.io/f/mvgaeddq', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: new FormData(document.getElementById('preorderForm'))
+  }).then(response => {
+    if (response.ok) {
+      alert(`Thanks for your preorder!\nYour order number is: ${orderNumber}`);
+    } else {
+      alert("Oops! There was a problem submitting your preorder.");
+    }
+  }).catch(error => {
+    alert("Error submitting form. Please try again.");
+  });
 }
 
 function openGallery(product, numImages) {
