@@ -53,6 +53,19 @@
   <img src="aura_logo_w.svg" alt="AURA Logo" class="logo">
   <h1>AURA</h1>
   <p class="mission">On a mission. 247.</p>
+<!-- Existing product entries without price rows -->
+
+<div class="product">
+  <img src="images/collab/tee_collab1.png" onclick="openGallery('collab',4)" alt="AURA X ALLIRON Tee">
+  <div class="product-name">AURA X ALLIRON Tee</div>
+  <ul>
+    <li>100% organic vegan and ecological-certified cotton (GRS, OCS, GOTS, OEKO-TEX 100, PETA Approved)</li>
+    <li>180 g/m²</li>
+    <li>Regular fit</li>
+    <li>Print on front, left sleeve, right sleeve</li>
+  </ul>
+  <button onclick="preOrder('AURA X ALLIRON Tee')">Pre-order</button>
+</div>
 
   <div class="product">
     <img src="images/crewneck/crewneck1.png" data-product="crewneck" data-images="5" alt="AURA Crewneck">
@@ -124,17 +137,24 @@
       alert(`Thanks for your preorder!\nYour order number is: ${orderNumber}`);
     }
 
-    function openGallery(product, numImages) {
-      let idx = 1;
-      const show = i => basicLightbox
-        .create(`\n          <img src=\"images/${product}/${product}${i}.png\" style=\"width:90vw;max-width:800px;border-radius:5px;\">\n          <div style=\"margin-top:10px;\">\n            <button onclick=\"navigate(-1)\">◀</button>\n            <button onclick=\"navigate(1)\">▶</button>\n          </div>\n        `, {
-          onShow: inst => {
-            window.navigate = dir => { inst.close(); idx = (idx - 1 + dir + numImages) % numImages + 1; show(idx).show(); };
-          }
-        });
-      show(idx).show();
-    }
-
+function openGallery(product, numImages) {
+  let index = 1;
+  const showImage = (idx) => {
+    return basicLightbox.create(`
+      <img src="images/${product}/${product}${idx}.png" style="width:90vw;max-width:800px;border-radius:5px;">
+      <div style="margin-top:10px;">
+        <button onclick="prevImage()">◀</button>
+        <button onclick="nextImage()">▶</button>
+      </div>
+    `,{
+      onShow: (instance) => {
+        window.nextImage = () => { index = idx < numImages ? idx+1 : 1; instance.close(); showImage(index).show(); };
+        window.prevImage = () => { index = idx > 1 ? idx-1 : numImages; instance.close(); showImage(index).show(); };
+      }
+    });
+  };
+  showImage(index).show();
+}
     // Click-to-advance carousel
     document.querySelectorAll('.product img').forEach(img => {
       img.dataset.index = 1;
